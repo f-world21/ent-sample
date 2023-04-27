@@ -2,6 +2,7 @@ package todo
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"todo/ent"
 
@@ -9,7 +10,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func Example_Todo() {
+func ExampleTodo() {
 	client, err := ent.Open(dialect.SQLite, "file:ent?mode=memory&cache=shared&_fk=1")
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v", err)
@@ -21,5 +22,12 @@ func Example_Todo() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 
+	task1, err := client.Todo.Create().Save(ctx)
+	if err != nil {
+		log.Fatalf("failed creating a todo: %v", err)
+	}
+	fmt.Println(task1)
 	// Output:
+	// Todo(id=1)
+
 }
